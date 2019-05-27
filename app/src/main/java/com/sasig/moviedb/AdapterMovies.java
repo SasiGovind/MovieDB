@@ -5,7 +5,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +18,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
 
     private List<Movie> movies_list;
     private List<Genre> genres_list;
+    private String URL_IMAGE = "https://image.tmdb.org/t/p/w500";
 
     public AdapterMovies(List<Movie> movies, List<Genre> genres) {
         this.movies_list = movies;
@@ -41,6 +46,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
         TextView title;
         TextView rating;
         TextView genres;
+        ImageView affiche;
 
         public ViewHolderMovie(View itemView) {
             super(itemView);
@@ -48,6 +54,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
             title = itemView.findViewById(R.id.item_movie_title);
             rating = itemView.findViewById(R.id.item_movie_rating);
             genres = itemView.findViewById(R.id.item_movie_genre);
+            affiche = itemView.findViewById(R.id.item_movie_poster);
         }
 
         public void bind(Movie movie) {
@@ -55,6 +62,10 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
             genres.setText(getGenres(movie.getGenreIds()));
+            Glide.with(itemView)
+                    .load(URL_IMAGE + movie.getPosterPath())
+                    .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
+                    .into(affiche);
         }
 
         private String getGenres(List<Integer> idsGenre) {
