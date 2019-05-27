@@ -41,6 +41,11 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
         return movies_list.size();
     }
 
+    public void addMovies(List<Movie> moviesToAdd) {
+        movies_list.addAll(moviesToAdd);
+        notifyDataSetChanged();
+    }
+
     class ViewHolderMovie extends RecyclerView.ViewHolder {
         TextView releaseDate;
         TextView title;
