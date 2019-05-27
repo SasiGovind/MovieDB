@@ -56,4 +56,28 @@ public class MoviesRepo {
                     }
                 });
     }
+
+    public void getGenres(final CallbackGenres callback) {
+        api.getGenres(BuildConfig.APIKEY, LANGUAGE)
+                .enqueue(new Callback<ResGenres>() {
+                    @Override
+                    public void onFailure(Call<ResGenres> call, Throwable t) {
+                        callback.onError();
+                    }
+
+                    @Override
+                    public void onResponse(Call<ResGenres> call, Response<ResGenres> resp) {
+                        if (resp.isSuccessful()) {
+                            ResGenres resGenres = resp.body();
+                            if (resGenres != null && resGenres.getGenres() != null) {
+                                callback.onSuccess(resGenres.getGenres());
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+                });
+    }
 }

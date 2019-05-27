@@ -1,19 +1,23 @@
 package com.sasig.moviedb;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolderMovie > {
 
-    private List<Movie> movies;
+    private List<Movie> movies_list;
+    private List<Genre> genres_list;
 
-    public AdapterMovies(List<Movie> movies) {
-        this.movies = movies;
+    public AdapterMovies(List<Movie> movies, List<Genre> genres) {
+        this.movies_list = movies;
+        this.genres_list = genres;
     }
 
     @Override
@@ -24,12 +28,12 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolderMovie holder, int position) {
-        holder.bind(movies.get(position));
+        holder.bind(movies_list.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return movies_list.size();
     }
 
     class ViewHolderMovie extends RecyclerView.ViewHolder {
@@ -50,7 +54,20 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
             releaseDate.setText(movie.getReleaseDate().split("-")[0]);
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
-            genres.setText("");
+            genres.setText(getGenres(movie.getGenreIds()));
+        }
+
+        private String getGenres(List<Integer> idsGenre) {
+            List<String> genres_films = new ArrayList<>();
+            for (Integer id_genre : idsGenre) {
+                for (Genre genre : genres_list) {
+                    if (genre.getId() == id_genre) {
+                        genres_films.add(genre.getName());
+                        break;
+                    }
+                }
+            }
+            return TextUtils.join(", ", genres_films);
         }
     }
 }
