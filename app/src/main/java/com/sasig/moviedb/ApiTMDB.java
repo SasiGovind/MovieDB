@@ -20,4 +20,20 @@ public interface ApiTMDB {
             @Query("api_key") String apiKey,
             @Query("language") String language
     );
+
+    ///// Pour Top_rated
+    @GET("movie/top_rated")
+    Call<ResMovies> getTopRatedMovies(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("page") int page
+    );
+
+    ///// Pour Upcoming
+    @GET("movie/upcoming")
+    Call<ResMovies> getUpcomingMovies(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("page") int page
+    );
 }

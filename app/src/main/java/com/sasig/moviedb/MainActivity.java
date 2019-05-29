@@ -1,10 +1,10 @@
 package com.sasig.moviedb;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -14,8 +14,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView movies_list;
     private AdapterMovies adapter;
     private MoviesRepo moviesRepo;
+    private BottomNavigationView bottomNavigationView;
 
     private List<Genre> genres_list;
+    private String sortBy = MoviesRepo.POPULAR;
     private boolean moviesFetching;
     private int currentPage = 1;
 
@@ -27,10 +29,37 @@ public class MainActivity extends AppCompatActivity {
         moviesRepo = MoviesRepo.getInstance();
         movies_list = findViewById(R.id.movies);
         movies_list.setLayoutManager(new LinearLayoutManager(this));
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.activity_main_bottom_navigation);
+
+        this.configureBottomNavigationView();
 
         scrollListener();
         getGenres();
 
+    }
+
+    private void configureBottomNavigationView(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
+    }
+
+    private Boolean updateMainFragment(Integer integer){
+        currentPage = 1;
+        switch (integer) {
+            case R.id.popular:
+                sortBy = MoviesRepo.POPULAR;
+                getMovies(currentPage);
+                return true;
+            case R.id.top_rated:
+                sortBy = MoviesRepo.TOP_RATED;
+                getMovies(currentPage);
+                return true;
+            case R.id.upcoming:
+                sortBy = MoviesRepo.UPCOMING;
+                getMovies(currentPage);
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void scrollListener() {
@@ -69,14 +98,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovies(int page) {
         moviesFetching = true;
-        moviesRepo.getMovies(new CallbackMovies() {
+        moviesRepo.getMovies(page, sortBy, new CallbackMovies() {
             @Override
-            public void onSuccess(List<Movie> movies,int page) {
-                Log.d("MoviesRepository", "Current Page = " + page);
+            public void onSuccess(List<Movie> movies, int page) {
                 if (adapter == null) {
                     adapter = new AdapterMovies(movies, genres_list);
                     movies_list.setAdapter(adapter);
                 } else {
+                    if (page == 1) {
+                        adapter.clearMovies();
+                    }
                     adapter.addMovies(movies);
                 }
                 currentPage = page;
@@ -87,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             public void onError() {
                 errorToast();
             }
-        },page);
+        });
     }
 
     private void errorToast() {
