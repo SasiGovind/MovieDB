@@ -1,6 +1,6 @@
 package com.sasig.moviedb;
 
-import android.support.annotation.NonNull;
+import android.util.Log;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -11,6 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MoviesRepo {
     private static final String URL = "https://api.themoviedb.org/3/";
     private static final String LANG = "en-US";
+
+    public static final String POPULAR = "popular";
+    public static final String TOP_RATED = "top_rated";
+    public static final String UPCOMING = "upcoming";
 
     private static MoviesRepo repo;
 
@@ -33,28 +37,44 @@ public class MoviesRepo {
         return repo;
     }
 
-    public void getMovies(final CallbackMovies callback, int page) {
-        api.getPopularMovies("8ee3f9a8aaca836ce25e10a71de8644b", LANG, page)
-                .enqueue(new Callback<ResMovies>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResMovies> call, @NonNull Response<ResMovies> response) {
-                        if (response.isSuccessful()) {
-                            ResMovies moviesResponse = response.body();
-                            if (moviesResponse != null && moviesResponse.getMovies() != null) {
-                                callback.onSuccess(moviesResponse.getMovies(), moviesResponse.getPage());
-                            } else {
-                                callback.onError();
-                            }
-                        } else {
-                            callback.onError();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResMovies> call, Throwable t) {
+    public void getMovies(int page, String sortBy, final CallbackMovies callback) {
+        Log.d("MoviesRepo", "Currently on Page = " + page);
+        Callback<ResMovies> call = new Callback<ResMovies>() {
+            @Override
+            public void onResponse(Call<ResMovies> call, Response<ResMovies> resp) {
+                if (resp.isSuccessful()) {
+                    ResMovies responseMovie = resp.body();
+                    if (responseMovie != null && responseMovie.getMovies() != null) {
+                        callback.onSuccess(responseMovie.getMovies(), responseMovie.getPage());
+                    } else {
                         callback.onError();
                     }
-                });
+                } else {
+                    callback.onError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResMovies> call, Throwable t) {
+                callback.onError();
+            }
+        };
+
+        switch (sortBy) {
+            case TOP_RATED:
+                api.getTopRatedMovies(BuildConfig.APIKEY, LANG, page)
+                        .enqueue(call);
+                break;
+            case UPCOMING:
+                api.getUpcomingMovies(BuildConfig.APIKEY, LANG, page)
+                        .enqueue(call);
+                break;
+            case POPULAR:
+            default:
+                api.getPopularMovies(BuildConfig.APIKEY, LANG, page)
+                        .enqueue(call);
+                break;
+        }
     }
 
     public void getGenres(final CallbackGenres callback) {
