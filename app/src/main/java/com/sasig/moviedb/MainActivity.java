@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         moviesRepo = MoviesRepo.getInstance();
         movies_list = findViewById(R.id.movies);
@@ -112,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 currentPage = page;
                 moviesFetching = false;
+                setAppTitle();
             }
 
             @Override
@@ -119,6 +124,20 @@ public class MainActivity extends AppCompatActivity {
                 errorToast();
             }
         });
+    }
+
+    private void setAppTitle() {
+        switch (sortBy) {
+            case MoviesRepo.POPULAR:
+                setTitle(getString(R.string.popular));
+                break;
+            case MoviesRepo.TOP_RATED:
+                setTitle(getString(R.string.top_rated));
+                break;
+            case MoviesRepo.UPCOMING:
+                setTitle(getString(R.string.upcoming));
+                break;
+        }
     }
 
     private void errorToast() {
