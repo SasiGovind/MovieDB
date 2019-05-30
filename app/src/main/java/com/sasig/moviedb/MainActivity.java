@@ -1,5 +1,6 @@
 package com.sasig.moviedb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean moviesFetching;
     private int currentPage = 1;
 
+    CallbackMoviesClick callbackMoviesClick = new CallbackMoviesClick() {
+        @Override
+        public void onClick(Movie movie) {
+            Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
+            intent.putExtra(MovieDetailActivity.ID_MOVIE, movie.getId());
+            startActivity(intent);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         scrollListener();
         getGenres();
-
     }
 
     private void configureBottomNavigationView(){
@@ -106,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<Movie> movies, int page) {
                 if (adapter == null) {
-                    adapter = new AdapterMovies(movies, genres_list);
+                    adapter = new AdapterMovies(movies, genres_list, callbackMoviesClick);
                     movies_list.setAdapter(adapter);
                 } else {
                     if (page == 1) {

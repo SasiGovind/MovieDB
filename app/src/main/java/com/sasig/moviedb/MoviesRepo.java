@@ -37,6 +37,30 @@ public class MoviesRepo {
         return repo;
     }
 
+    public void getMovie(int id_movie, final CallbackMovie callback) {
+        api.getMovie(id_movie, BuildConfig.APIKEY, LANG)
+                .enqueue(new Callback<Movie>() {
+                    @Override
+                    public void onResponse(Call<Movie> call, Response<Movie> resp) {
+                        if (resp.isSuccessful()) {
+                            Movie movie = resp.body();
+                            if (movie != null) {
+                                callback.onSuccess(movie);
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Movie> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+    }
+
     public void getMovies(int page, String sortBy, final CallbackMovies callback) {
         Log.d("MoviesRepo", "Currently on Page = " + page);
         Callback<ResMovies> call = new Callback<ResMovies>() {
