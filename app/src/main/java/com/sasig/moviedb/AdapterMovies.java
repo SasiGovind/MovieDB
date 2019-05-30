@@ -19,10 +19,13 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
     private List<Movie> movies_list;
     private List<Genre> genres_list;
     private String URL_IMAGE = "https://image.tmdb.org/t/p/w500";
+    private CallbackMoviesClick callback_movies_click;
 
-    public AdapterMovies(List<Movie> movies, List<Genre> genres) {
+
+    public AdapterMovies(List<Movie> movies, List<Genre> genres, CallbackMoviesClick callback_movies_click) {
         this.movies_list = movies;
         this.genres_list = genres;
+        this.callback_movies_click = callback_movies_click;
     }
 
     @Override
@@ -57,6 +60,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
         TextView rating;
         TextView genres;
         ImageView affiche;
+        Movie movie;
 
         public ViewHolderMovie(View itemView) {
             super(itemView);
@@ -65,9 +69,16 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
             rating = itemView.findViewById(R.id.item_movie_rating);
             genres = itemView.findViewById(R.id.item_movie_genre);
             affiche = itemView.findViewById(R.id.item_movie_poster);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback_movies_click.onClick(movie);
+                }
+            });
         }
 
         public void bind(Movie movie) {
+            this.movie = movie;
             releaseDate.setText(movie.getReleaseDate().split("-")[0]);
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
