@@ -1,8 +1,11 @@
 package com.sasig.moviedb;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
@@ -13,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -223,6 +227,59 @@ public class MainActivity extends AppCompatActivity {
                 setTitle(getString(R.string.upcoming));
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        //ViewGroup viewGroup = findViewById(android.R.id.content);
+        //View dialogView = LayoutInflater.from(this).inflate(R.layout.exit_dialog, viewGroup, false);
+        View dialogView = getLayoutInflater().inflate(R.layout.exit_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        final Button buttonOk = (Button) dialogView.findViewById(R.id.buttonOk);
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "See you soon :D", Toast.LENGTH_SHORT).show();
+                MainActivity.super.onBackPressed();
+            }
+        });
+        final Button buttonNo = (Button) dialogView.findViewById(R.id.buttonNo);
+        buttonNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+                Toast.makeText(MainActivity.this, "You the BOSS", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show();
+
+        /*
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("I saw you quitting this app ?").setCancelable(false)
+                .setPositiveButton("Yeah I'll come later", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "See you soon :D", Toast.LENGTH_SHORT).show();
+                        MainActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton("Nope I will stay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Toast.makeText(MainActivity.this, "You the BOSS", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        */
+
+        //super.onBackPressed();
     }
 
     private void errorToast() {
