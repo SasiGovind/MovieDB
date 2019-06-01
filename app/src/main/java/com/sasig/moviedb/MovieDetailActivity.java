@@ -1,13 +1,16 @@
 package com.sasig.moviedb;
 
+import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -46,6 +49,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
@@ -60,6 +65,47 @@ public class MovieDetailActivity extends AppCompatActivity {
         configureToolbar();
         gatherMovieUI();
         getMovieDetail();
+        animTitleOn();
+    }
+
+    private void animTitleOn(){
+
+        final float startSize = 18; // Size in pixels
+        final float endSize = 30;
+        long animationDuration = 300; // Animation duration in ms
+
+        ValueAnimator animator = ValueAnimator.ofFloat(startSize, endSize);
+        animator.setDuration(animationDuration);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float animatedValue = (float) valueAnimator.getAnimatedValue();
+                md_title.setTextSize(animatedValue);
+            }
+        });
+
+        animator.start();
+    }
+
+    private long animTitleOff(){
+
+        final float startSize = 30; // Size in pixels
+        final float endSize = 18;
+        long animationDuration = 100; // Animation duration in ms
+
+        ValueAnimator animator = ValueAnimator.ofFloat(startSize, endSize);
+        animator.setDuration(animationDuration);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float animatedValue = (float) valueAnimator.getAnimatedValue();
+                md_title.setTextSize(animatedValue);
+            }
+        });
+        animator.start();
+        return animationDuration;
     }
 
     private void configureToolbar() {
@@ -166,8 +212,21 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        onSupportNavigateUp();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        long duration = animTitleOff();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finishAfterTransition();
+            }
+        }, duration/2);
+        //onBackPressed();
         return true;
     }
 
