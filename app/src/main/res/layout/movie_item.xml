@@ -18,6 +18,7 @@
             android:layout_width="96dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
+            android:transitionName="poster_shared"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,12 +30,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="8dp"
             android:alpha="0.7"
             android:text="2019"
-            app:layout_constraintEnd_toStartOf="@+id/item_movie_rating"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/item_movie_poster"
+            android:textAlignment="textEnd"
+            android:transitionName="year_shared"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/item_movie_rating"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -47,6 +49,7 @@
             android:text="Movie Name"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:transitionName="movie_title_shared"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/item_movie_poster"
@@ -55,12 +58,14 @@
         <TextView
             android:id="@+id/item_movie_genre"
             android:layout_width="0dp"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:alpha="0.7"
             android:text="Science, Funny"
+            android:textAlignment="center"
+            android:transitionName="genres_shared"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/item_movie_title" />
@@ -69,11 +74,12 @@
             android:id="@+id/item_movie_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:text="9.1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/item_movie_release_date"
+            app:layout_constraintStart_toEndOf="@+id/item_movie_poster"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>

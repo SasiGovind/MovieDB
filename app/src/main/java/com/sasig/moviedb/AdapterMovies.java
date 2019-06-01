@@ -72,14 +72,14 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback_movies_click.onClick(movie);
+                    callback_movies_click.onClick(title, genres, releaseDate, affiche, movie);
                 }
             });
         }
 
         public void bind(Movie movie) {
             this.movie = movie;
-            releaseDate.setText(movie.getReleaseDate().split("-")[0]);
+            releaseDate.setText(movie.getReleaseDate());//.split("-")[0]);
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
             genres.setText(getGenres(movie.getGenreIds()));
