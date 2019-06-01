@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#616161</color> <!-- #D81B60 -->
 
+    <color name="exit_top">#ADADAD</color>
+    <color name="buttonNo">#FF5722</color>
+    <color name="buttonYes">#4CAF50</color>
     <color name="background_light">#efefef</color>
     <color name="colorAccentDark">#cecece</color>
 </resources>
