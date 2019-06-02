@@ -11,10 +11,12 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,17 +25,18 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sasig.moviedb.R;
+import com.sasig.moviedb.controller.AdapterMovies;
 import com.sasig.moviedb.controller.CallbackGenres;
 import com.sasig.moviedb.controller.CallbackMovies;
 import com.sasig.moviedb.controller.CallbackMoviesClick;
+import com.sasig.moviedb.controller.MoviesRepo;
 import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
-import com.sasig.moviedb.controller.MoviesRepo;
-import com.sasig.moviedb.R;
-import com.sasig.moviedb.controller.AdapterMovies;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterMovies adapter;
     private MoviesRepo moviesRepo;
     private BottomNavigationView bottomNavigationView;
+    private SwipeRefreshLayout swipeRefresh;
 
     SharedPreferences myPrefs;
 
@@ -86,9 +90,10 @@ public class MainActivity extends AppCompatActivity {
         movies_list = findViewById(R.id.movies);
         movies_list.setLayoutManager(new LinearLayoutManager(this));
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.activity_main_bottom_navigation);
+        swipeRefresh = findViewById(R.id.swipeRefresh);
 
         this.configureBottomNavigationView();
-
+        configureRefreshView();
         scrollListener();
         getGenres();
     }
@@ -115,6 +120,28 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
+    }
+
+    private void configureRefreshView(){
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                currentPage = 1;
+                adapter.clearMovies();
+                SharedPreferences.Editor editor = myPrefs.edit();
+
+                Map<String, ?> allEntries = myPrefs.getAll();
+                for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                    Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                    if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
+                        editor.remove(entry.getKey());
+                        editor.apply();
+                    }
+                }
+                getGenres();
+                //swipeRefresh.setRefreshing(false);
+            }
+        });
     }
 
     private void scrollListener() {
@@ -199,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         currentPage = page;
         moviesFetching = false;
         setAppTitle();
+        swipeRefresh.setRefreshing(false);
     }
 
     private void getMovies(int page) {
