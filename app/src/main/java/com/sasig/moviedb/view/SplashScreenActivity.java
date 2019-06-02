@@ -1,8 +1,10 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.sasig.moviedb.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

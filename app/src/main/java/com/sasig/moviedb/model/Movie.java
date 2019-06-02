@@ -1,4 +1,4 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

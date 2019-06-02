@@ -1,4 +1,4 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +23,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sasig.moviedb.controller.CallbackGenres;
+import com.sasig.moviedb.controller.CallbackMovies;
+import com.sasig.moviedb.controller.CallbackMoviesClick;
+import com.sasig.moviedb.model.Genre;
+import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.controller.MoviesRepo;
+import com.sasig.moviedb.R;
+import com.sasig.moviedb.controller.AdapterMovies;
 
 import java.lang.reflect.Type;
 import java.util.List;

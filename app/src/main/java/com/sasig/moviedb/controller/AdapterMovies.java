@@ -1,4 +1,4 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.controller;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sasig.moviedb.model.Genre;
+import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +67,11 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
 
         public ViewHolderMovie(View itemView) {
             super(itemView);
-            releaseDate = itemView.findViewById(R.id.item_movie_release_date);
-            title = itemView.findViewById(R.id.item_movie_title);
-            rating = itemView.findViewById(R.id.item_movie_rating);
-            genres = itemView.findViewById(R.id.item_movie_genre);
-            affiche = itemView.findViewById(R.id.item_movie_poster);
+            releaseDate = itemView.findViewById(R.id.m_release_date);
+            title = itemView.findViewById(R.id.m_title);
+            rating = itemView.findViewById(R.id.m_rating);
+            genres = itemView.findViewById(R.id.m_genre);
+            affiche = itemView.findViewById(R.id.m_poster);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
