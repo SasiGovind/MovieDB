@@ -1,6 +1,7 @@
 package com.sasig.moviedb.view;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -20,11 +23,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.sasig.moviedb.R;
 import com.sasig.moviedb.controller.CallbackMovie;
+import com.sasig.moviedb.controller.MoviesRepo;
 import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
-import com.sasig.moviedb.controller.MoviesRepo;
-import com.sasig.moviedb.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +74,33 @@ public class MovieDetailActivity extends AppCompatActivity {
         gatherMovieUI();
         getMovieDetail();
         animTitleOn();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.movie_detail_options, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                StringBuilder text = new StringBuilder();
+                text.append("Hi, i'm sharing some movie details.");
+                text.append("\n\nMovie : "+ md_title.getText()+".");
+                text.append("\n\nRating : "+ md_rating.getRating()+"/5.");
+                text.append("\n\nRelease Date : "+ md_releasedate.getText()+".");
+                text.append("\n\nOverview : "+md_overview.getText());
+                text.append("\n\nHave a wonderful day :)");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, text.toString());
+                startActivity(shareIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void animTitleOn(){
