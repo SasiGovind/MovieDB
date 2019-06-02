@@ -7,4 +7,10 @@
         android:icon="@drawable/baseline_share_24"
         android:title="share"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/web_search"
+        android:enabled="true"
+        android:icon="@drawable/baseline_search_24"
+        android:title="web_search"
+        app:showAsAction="always" />
 </menu>

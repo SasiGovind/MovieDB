@@ -1,6 +1,7 @@
 package com.sasig.moviedb.view;
 
 import android.animation.ValueAnimator;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -97,6 +98,12 @@ public class MovieDetailActivity extends AppCompatActivity {
                 text.append("\n\nHave a wonderful day :)");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, text.toString());
                 startActivity(shareIntent);
+                return true;
+            case R.id.web_search:
+                String query = "Movie "+md_title.getText()+" "+((String)md_releasedate.getText()).split("-")[0];
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, query);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
