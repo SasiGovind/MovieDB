@@ -1,4 +1,4 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.model;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

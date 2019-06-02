@@ -1,4 +1,4 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.view;
 
 import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
@@ -20,6 +20,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.sasig.moviedb.controller.CallbackMovie;
+import com.sasig.moviedb.model.Genre;
+import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.controller.MoviesRepo;
+import com.sasig.moviedb.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,6 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.controller;
+
+import com.sasig.moviedb.model.Movie;
 
 import java.util.List;
 

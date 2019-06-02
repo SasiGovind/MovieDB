@@ -1,4 +1,4 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.controller;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sasig.moviedb.model.Genre;
+import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.R;
 
 import java.util.ArrayList;
 import java.util.List;

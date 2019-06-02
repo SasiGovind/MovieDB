@@ -1,6 +1,12 @@
-package com.sasig.moviedb;
+package com.sasig.moviedb.controller;
 
 import android.util.Log;
+
+import com.sasig.moviedb.model.ApiTMDB;
+import com.sasig.moviedb.BuildConfig;
+import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.model.ResGenres;
+import com.sasig.moviedb.model.ResMovies;
 
 import retrofit2.Call;
 import retrofit2.Callback;
