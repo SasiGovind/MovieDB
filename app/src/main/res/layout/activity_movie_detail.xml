@@ -199,6 +199,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginRight="16dp"
                 android:text="Trailers"
+                android:textAlignment="textEnd"
                 android:textSize="24sp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
