@@ -37,11 +37,13 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public static String ID_MOVIE = "movie_id";
 
-    private static String POSTER_URL = "https://image.tmdb.org/t/p/w780";
+    private static String BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
+    private static String POSTER_URL = "https://image.tmdb.org/t/p/w500";
     private static String YT_URL = "https://www.youtube.com/watch?v=%s";
     private static String YT_THUMB_URL = "https://img.youtube.com/vi/%s/0.jpg";
 
     private ImageView md_backdrop;
+    private ImageView md_poster;
     private TextView md_title;
     private TextView md_genres;
     private TextView md_overview;
@@ -162,6 +164,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void gatherMovieUI() {
         md_backdrop = findViewById(R.id.md_backdrop);
+        md_poster = findViewById(R.id.md_poster);
         md_title = findViewById(R.id.md_title);
         md_genres = findViewById(R.id.md_genres);
         md_overview = findViewById(R.id.md_overview);
@@ -199,9 +202,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         md_releasedate.setText(movie.getReleaseDate());
         if (!isFinishing()) {
             Glide.with(MovieDetailActivity.this)
-                    .load(POSTER_URL + movie.getBackdrop())
+                    .load(BACKDROP_URL + movie.getBackdrop())
                     .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
                     .into(md_backdrop);
+        }
+        if (!isFinishing()) {
+            Glide.with(MovieDetailActivity.this)
+                    .load(POSTER_URL + movie.getPosterPath())
+                    .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
+                    .into(md_poster);
         }
         if(connection_type.equals("online")) saveOfflineMovie(id_movie+"", movie);
     }
