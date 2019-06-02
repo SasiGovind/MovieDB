@@ -26,9 +26,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.sasig.moviedb.R;
+import com.sasig.moviedb.controller.CallbackCast;
 import com.sasig.moviedb.controller.CallbackMovie;
 import com.sasig.moviedb.controller.CallbackTrailers;
 import com.sasig.moviedb.controller.MoviesRepo;
+import com.sasig.moviedb.model.Cast;
 import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
 import com.sasig.moviedb.model.Trailer;
@@ -42,6 +44,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private static String BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
     private static String POSTER_URL = "https://image.tmdb.org/t/p/w500";
+    private static String CAST_URL = "https://image.tmdb.org/t/p/w185";
     private static String YT_URL = "https://www.youtube.com/watch?v=%s";
     private static String YT_THUMB_URL = "https://img.youtube.com/vi/%s/0.jpg";
 
@@ -54,6 +57,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView md_releasedate;
     private RatingBar md_rating;
     private TextView md_trailersLabel;
+    private TextView md_castsLabel;
+    private LinearLayout md_casts;
     private LinearLayout md_trailers;
     private LinearLayout md_reviews;
 
@@ -176,6 +181,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         md_releasedate = findViewById(R.id.md_releasedate);
         md_rating = findViewById(R.id.md_rating);
         md_trailersLabel = findViewById(R.id.md_trailerslabel);
+        md_castsLabel = findViewById(R.id.md_castslabel);
+        md_casts = findViewById(R.id.md_casts);
         md_trailers = findViewById(R.id.md_trailers);
         md_reviews = findViewById(R.id.md_reviews);
     }
@@ -217,6 +224,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
                     .into(md_poster);
         }
+        getCasts(movie);
         getTrailers(movie);
         if(connection_type.equals("online")) saveOfflineMovie(id_movie+"", movie);
     }
@@ -236,6 +244,42 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onError() {
                 finish();
+            }
+        });
+    }
+
+    private void getCasts(Movie movie) {
+        moviesRepo.getCasts(movie.getId(), new CallbackCast() {
+            @Override
+            public void onSuccess(List<Cast> casts) {
+                if(!casts.isEmpty()) md_castsLabel.setVisibility(View.VISIBLE);
+                md_casts.removeAllViews();
+                for (final Cast cast : casts) {
+                    View parent = getLayoutInflater().inflate(R.layout.thumb_cast, md_casts, false);
+                    ImageView thumb_actor_view = parent.findViewById(R.id.actor_poster);
+                    TextView actor_name = parent.findViewById(R.id.actor_name);
+                    thumb_actor_view.requestLayout();
+                    thumb_actor_view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String query = cast.getActorName()+" in the movie "+md_title.getText();
+                            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                            intent.putExtra(SearchManager.QUERY, query);
+                            startActivity(intent);
+                        }
+                    });
+                    actor_name.setText(cast.getActorName());
+                    Glide.with(MovieDetailActivity.this)
+                            .load(CAST_URL + cast.getProfileImagePath())
+                            .apply(RequestOptions.placeholderOf(R.drawable.baseline_person_pin_24).centerCrop())
+                            .into(thumb_actor_view);
+                    md_casts.addView(parent);
+                }
+            }
+
+            @Override
+            public void onError() {
+                md_castsLabel.setVisibility(View.GONE);
             }
         });
     }

@@ -172,8 +172,23 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/md_summarylabel" />
 
+            <TextView
+                android:id="@+id/md_castslabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="16dp"
+                android:text="Casts"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/md_overview" />
+
             <HorizontalScrollView
-                android:id="@+id/md_container"
+                android:id="@+id/md_container_cast"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -182,10 +197,10 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/md_trailerslabel">
+                app:layout_constraintTop_toBottomOf="@+id/md_castslabel">
 
                 <LinearLayout
-                    android:id="@+id/md_trailers"
+                    android:id="@+id/md_casts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" />
@@ -204,7 +219,26 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/md_overview" />
+                app:layout_constraintTop_toBottomOf="@+id/md_container_cast" />
+
+            <HorizontalScrollView
+                android:id="@+id/md_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/md_trailerslabel">
+
+                <LinearLayout
+                    android:id="@+id/md_trailers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
             <TextView
                 android:id="@+id/md_reviewslabel"
