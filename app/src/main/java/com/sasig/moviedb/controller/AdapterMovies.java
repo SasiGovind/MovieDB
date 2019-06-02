@@ -82,7 +82,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
 
         public void bind(Movie movie) {
             this.movie = movie;
-            releaseDate.setText(movie.getReleaseDate());//.split("-")[0]);
+            releaseDate.setText(movie.getReleaseDate().split("-")[0]);
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
             genres.setText(getGenres(movie.getGenreIds()));

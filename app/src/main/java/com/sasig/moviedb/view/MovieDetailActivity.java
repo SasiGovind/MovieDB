@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -25,10 +26,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.sasig.moviedb.R;
+import com.sasig.moviedb.controller.CallbackCast;
 import com.sasig.moviedb.controller.CallbackMovie;
+import com.sasig.moviedb.controller.CallbackTrailers;
 import com.sasig.moviedb.controller.MoviesRepo;
+import com.sasig.moviedb.model.Cast;
 import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.model.Trailer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +42,23 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public static String ID_MOVIE = "movie_id";
 
-    private static String POSTER_URL = "https://image.tmdb.org/t/p/w780";
+    private static String BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
+    private static String POSTER_URL = "https://image.tmdb.org/t/p/w500";
+    private static String CAST_URL = "https://image.tmdb.org/t/p/w185";
     private static String YT_URL = "https://www.youtube.com/watch?v=%s";
     private static String YT_THUMB_URL = "https://img.youtube.com/vi/%s/0.jpg";
 
     private ImageView md_backdrop;
+    private ImageView md_poster;
     private TextView md_title;
     private TextView md_genres;
     private TextView md_overview;
     private TextView md_overviewlabel;
     private TextView md_releasedate;
     private RatingBar md_rating;
+    private TextView md_trailersLabel;
+    private TextView md_castsLabel;
+    private LinearLayout md_casts;
     private LinearLayout md_trailers;
     private LinearLayout md_reviews;
 
@@ -162,12 +173,16 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void gatherMovieUI() {
         md_backdrop = findViewById(R.id.md_backdrop);
+        md_poster = findViewById(R.id.md_poster);
         md_title = findViewById(R.id.md_title);
         md_genres = findViewById(R.id.md_genres);
         md_overview = findViewById(R.id.md_overview);
         md_overviewlabel = findViewById(R.id.md_summarylabel);
         md_releasedate = findViewById(R.id.md_releasedate);
         md_rating = findViewById(R.id.md_rating);
+        md_trailersLabel = findViewById(R.id.md_trailerslabel);
+        md_castsLabel = findViewById(R.id.md_castslabel);
+        md_casts = findViewById(R.id.md_casts);
         md_trailers = findViewById(R.id.md_trailers);
         md_reviews = findViewById(R.id.md_reviews);
     }
@@ -199,10 +214,18 @@ public class MovieDetailActivity extends AppCompatActivity {
         md_releasedate.setText(movie.getReleaseDate());
         if (!isFinishing()) {
             Glide.with(MovieDetailActivity.this)
-                    .load(POSTER_URL + movie.getBackdrop())
+                    .load(BACKDROP_URL + movie.getBackdrop())
                     .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
                     .into(md_backdrop);
         }
+        if (!isFinishing()) {
+            Glide.with(MovieDetailActivity.this)
+                    .load(POSTER_URL + movie.getPosterPath())
+                    .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
+                    .into(md_poster);
+        }
+        getCasts(movie);
+        getTrailers(movie);
         if(connection_type.equals("online")) saveOfflineMovie(id_movie+"", movie);
     }
 
@@ -223,6 +246,80 @@ public class MovieDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void getCasts(Movie movie) {
+        moviesRepo.getCasts(movie.getId(), new CallbackCast() {
+            @Override
+            public void onSuccess(List<Cast> casts) {
+                if(!casts.isEmpty()) md_castsLabel.setVisibility(View.VISIBLE);
+                md_casts.removeAllViews();
+                for (final Cast cast : casts) {
+                    View parent = getLayoutInflater().inflate(R.layout.thumb_cast, md_casts, false);
+                    ImageView thumb_actor_view = parent.findViewById(R.id.actor_poster);
+                    TextView actor_name = parent.findViewById(R.id.actor_name);
+                    thumb_actor_view.requestLayout();
+                    thumb_actor_view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String query = cast.getActorName()+" in the movie "+md_title.getText();
+                            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                            intent.putExtra(SearchManager.QUERY, query);
+                            startActivity(intent);
+                        }
+                    });
+                    actor_name.setText(cast.getActorName());
+                    Glide.with(MovieDetailActivity.this)
+                            .load(CAST_URL + cast.getProfileImagePath())
+                            .apply(RequestOptions.placeholderOf(R.drawable.baseline_person_pin_24).centerCrop())
+                            .into(thumb_actor_view);
+                    md_casts.addView(parent);
+                }
+            }
+
+            @Override
+            public void onError() {
+                md_castsLabel.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void getTrailers(Movie movie) {
+        moviesRepo.getTrailers(movie.getId(), new CallbackTrailers() {
+            @Override
+            public void onSuccess(List<Trailer> trailers) {
+                if(!trailers.isEmpty()) md_trailersLabel.setVisibility(View.VISIBLE);
+                md_trailers.removeAllViews();
+                for (final Trailer trailer : trailers) {
+                    View parent = getLayoutInflater().inflate(R.layout.thumb_trailer, md_trailers, false);
+                    ImageView thumb_trailer_view = parent.findViewById(R.id.trailer_poster);
+                    TextView trailer_title = parent.findViewById(R.id.trailer_name);
+                    thumb_trailer_view.requestLayout();
+                    thumb_trailer_view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            launchTrailer(String.format(YT_URL, trailer.getKey()));
+                        }
+                    });
+                    trailer_title.setText(trailer.getTitle());
+                    Glide.with(MovieDetailActivity.this)
+                            .load(String.format(YT_THUMB_URL, trailer.getKey()))
+                            .apply(RequestOptions.placeholderOf(R.color.colorPrimary).centerCrop())
+                            .into(thumb_trailer_view);
+                    md_trailers.addView(parent);
+                }
+            }
+
+            @Override
+            public void onError() {
+                md_trailersLabel.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void launchTrailer(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 
     private void getGenres(final Movie movie) {

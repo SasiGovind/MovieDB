@@ -45,4 +45,20 @@ public interface ApiTMDB {
             @Query("api_key") String api_key,
             @Query("language") String language
     );
+
+    ///// Pour Movie Trailer
+    @GET("movie/{movie_id}/videos")
+    Call<ResTrailer> getTrailers(
+            @Path("movie_id") int id,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
+
+    ///// Pour Movie Cast
+    @GET("movie/{movie_id}/credits")
+    Call<ResCast> getCredits(
+            @Path("movie_id") int id,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
 }

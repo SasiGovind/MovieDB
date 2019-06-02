@@ -2,11 +2,13 @@ package com.sasig.moviedb.controller;
 
 import android.util.Log;
 
-import com.sasig.moviedb.model.ApiTMDB;
 import com.sasig.moviedb.BuildConfig;
+import com.sasig.moviedb.model.ApiTMDB;
 import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.model.ResCast;
 import com.sasig.moviedb.model.ResGenres;
 import com.sasig.moviedb.model.ResMovies;
+import com.sasig.moviedb.model.ResTrailer;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,6 +107,54 @@ public class MoviesRepo {
                         .enqueue(call);
                 break;
         }
+    }
+
+    public void getCasts(int id_movie, final CallbackCast callback) {
+        api.getCredits(id_movie, BuildConfig.APIKEY, LANG)
+                .enqueue(new Callback<ResCast>() {
+                    @Override
+                    public void onResponse(Call<ResCast> call, Response<ResCast> resp) {
+                        if (resp.isSuccessful()) {
+                            ResCast resCast = resp.body();
+                            if (resCast != null && resCast.getCast() != null) {
+                                callback.onSuccess(resCast.getCast());
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResCast> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+    }
+
+    public void getTrailers(int id_movie, final CallbackTrailers callback) {
+        api.getTrailers(id_movie, BuildConfig.APIKEY, LANG)
+                .enqueue(new Callback<ResTrailer>() {
+                    @Override
+                    public void onResponse(Call<ResTrailer> call, Response<ResTrailer> resp) {
+                        if (resp.isSuccessful()) {
+                            ResTrailer resTrailer = resp.body();
+                            if (resTrailer != null && resTrailer.getTrailers() != null) {
+                                callback.onSuccess(resTrailer.getTrailers());
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResTrailer> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
     }
 
     public void getGenres(final CallbackGenres callback) {
