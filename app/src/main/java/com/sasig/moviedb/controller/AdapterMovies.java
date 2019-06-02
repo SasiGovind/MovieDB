@@ -67,11 +67,11 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
 
         public ViewHolderMovie(View itemView) {
             super(itemView);
-            releaseDate = itemView.findViewById(R.id.item_movie_release_date);
-            title = itemView.findViewById(R.id.item_movie_title);
-            rating = itemView.findViewById(R.id.item_movie_rating);
-            genres = itemView.findViewById(R.id.item_movie_genre);
-            affiche = itemView.findViewById(R.id.item_movie_poster);
+            releaseDate = itemView.findViewById(R.id.m_release_date);
+            title = itemView.findViewById(R.id.m_title);
+            rating = itemView.findViewById(R.id.m_rating);
+            genres = itemView.findViewById(R.id.m_genre);
+            affiche = itemView.findViewById(R.id.m_poster);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
