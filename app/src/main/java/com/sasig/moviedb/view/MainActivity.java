@@ -2,10 +2,13 @@ package com.sasig.moviedb.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
@@ -96,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         configureRefreshView();
         scrollListener();
         getGenres();
+
+        //// ALERT : BE CAREFUL AT THIS MAY CAUSE APP CRASH WITHOUT EXPLICATIONS
+        bottomNavigationView.getMenu().findItem(R.id.popular).setChecked(true);//setSelectedItemId(R.id.top_rated);
     }
 
     private void configureBottomNavigationView(){
@@ -103,8 +109,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Boolean updateMainFragment(Integer integer){
-        currentPage = 1;
+        if(integer != R.id.previous && integer != R.id.next)currentPage = 1;
         switch (integer) {
+            case R.id.previous:
+                navigateOnPage(--currentPage);
+                return false;
             case R.id.popular:
                 sortBy = MoviesRepo.POPULAR;
                 getMovies(currentPage);
@@ -117,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
                 sortBy = MoviesRepo.UPCOMING;
                 getMovies(currentPage);
                 return true;
+            case R.id.next:
+                navigateOnPage(++currentPage);
+                return false;
             default:
                 return false;
         }
@@ -129,19 +141,38 @@ public class MainActivity extends AppCompatActivity {
                 currentPage = 1;
                 adapter.clearMovies();
                 SharedPreferences.Editor editor = myPrefs.edit();
-
                 Map<String, ?> allEntries = myPrefs.getAll();
-                for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                    Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                    if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
-                        editor.remove(entry.getKey());
-                        editor.apply();
+                if(isOnline()){
+                    for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                        Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                        if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
+                            editor.remove(entry.getKey());
+                            editor.apply();
+                        }
                     }
                 }
                 getGenres();
                 //swipeRefresh.setRefreshing(false);
             }
         });
+    }
+
+    private void navigateOnPage(int page){
+        currentPage = (page > 0)?page:1;
+        adapter.clearMovies();
+        SharedPreferences.Editor editor = myPrefs.edit();
+
+        Map<String, ?> allEntries = myPrefs.getAll();
+        if(isOnline()){
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
+                    editor.remove(entry.getKey());
+                    editor.apply();
+                }
+            }
+        }
+        getMovies(currentPage);
     }
 
     private void scrollListener() {
@@ -316,6 +347,13 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //super.onBackPressed();
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void errorToast() {
