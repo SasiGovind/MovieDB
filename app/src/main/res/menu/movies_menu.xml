@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/previous"
+        android:enabled="true"
+        android:icon="@drawable/baseline_navigate_before_24"
+        android:title="Previous"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/popular"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
@@ -18,5 +24,11 @@
         android:enabled="true"
         android:icon="@drawable/baseline_movie_filter_24"
         android:title="@string/upcoming"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/next"
+        android:enabled="true"
+        android:icon="@drawable/baseline_navigate_next_24"
+        android:title="Next"
         app:showAsAction="ifRoom" />
 </menu>
