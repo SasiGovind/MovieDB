@@ -7,13 +7,16 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_moviedb_icon"
         android:label="@string/app_name"
-        android:hardwareAccelerated="true"
         android:roundIcon="@mipmap/ic_moviedb_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SplashScreenActivity" android:theme="@style/SplashScreenTheme">
+        <activity android:name=".view.ZoomActivity"></activity>
+        <activity
+            android:name=".view.SplashScreenActivity"
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.MovieDetailActivity" />
-        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.MainActivity" />
     </application>
 
 </manifest>

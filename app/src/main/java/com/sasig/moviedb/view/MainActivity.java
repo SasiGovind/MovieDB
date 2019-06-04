@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         scrollListener();
         getGenres();
 
-        //// ALERT : BE CAREFUL AT THIS MAY CAUSE APP CRASH WITHOUT EXPLICATIONS
+        //// ALERT : BE CAREFUL AT THIS MAY CAUSE APP CRASH WITHOUT EXPLICATIONS (PLACER A LA FIN EXPRES)
         bottomNavigationView.getMenu().findItem(R.id.popular).setChecked(true);//setSelectedItemId(R.id.top_rated);
     }
 
@@ -145,19 +145,18 @@ public class MainActivity extends AppCompatActivity {
                 if(isOnline()){
                     for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                         Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                        if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
+                        if(entry.getKey().startsWith(sortBy)){ //if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
                             editor.remove(entry.getKey());
                             editor.apply();
                         }
                     }
                 }
-                getGenres();
-                //swipeRefresh.setRefreshing(false);
+                getMovies(currentPage);//getGenres();//swipeRefresh.setRefreshing(false);
             }
         });
     }
 
-    private void navigateOnPage(int page){
+    private void navigateOnPage(int page){ // Not compatible with offline storage
         currentPage = (page > 0)?page:1;
         adapter.clearMovies();
         SharedPreferences.Editor editor = myPrefs.edit();
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         if(isOnline()){
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                 Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
+                if(entry.getKey().startsWith(sortBy)){//if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
                     editor.remove(entry.getKey());
                     editor.apply();
                 }
