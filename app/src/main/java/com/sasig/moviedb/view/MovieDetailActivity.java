@@ -2,12 +2,17 @@ package com.sasig.moviedb.view;
 
 import android.animation.ValueAnimator;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -25,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sasig.moviedb.R;
 import com.sasig.moviedb.controller.CallbackCast;
 import com.sasig.moviedb.controller.CallbackMovie;
@@ -35,6 +41,7 @@ import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
 import com.sasig.moviedb.model.Trailer;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +50,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     public static String ID_MOVIE = "movie_id";
 
     private static String BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
+    private static String POSTER_ORIGINAL_URL = "https://image.tmdb.org/t/p/original";
     private static String POSTER_URL = "https://image.tmdb.org/t/p/w500";
     private static String CAST_URL = "https://image.tmdb.org/t/p/w185";
     private static String YT_URL = "https://www.youtube.com/watch?v=%s";
@@ -61,6 +69,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private LinearLayout md_casts;
     private LinearLayout md_trailers;
     private LinearLayout md_reviews;
+    private String poster_path;
 
     private MoviesRepo moviesRepo;
     private int id_movie;
@@ -84,6 +93,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         configureToolbar();
         gatherMovieUI();
+        setZoomPoster();
         getMovieDetail();
         animTitleOn();
     }
@@ -187,6 +197,36 @@ public class MovieDetailActivity extends AppCompatActivity {
         md_reviews = findViewById(R.id.md_reviews);
     }
 
+    private void setZoomPoster(){
+        md_poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isOnline()){
+                    Pair<View, String> p1 = Pair.create((View)md_poster, "poster_shared");
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieDetailActivity.this, p1);
+                    Intent intent = new Intent(MovieDetailActivity.this, ZoomActivity.class);
+                    intent.putExtra("poster_path", poster_path);
+                    startActivity(intent, options.toBundle());
+                }
+            }
+        });
+    }
+
+    private List checkNget(String key){
+        if(myPrefsMovie.contains(key)){
+            Gson gson = new Gson();
+            String json = myPrefsMovie.getString(key, "");
+            Type listType = null;
+            if(key.endsWith("casts"))listType = new TypeToken<List<Cast>>(){}.getType();
+            else listType = new TypeToken<List<Trailer>>(){}.getType();
+
+            List list = gson.fromJson(json, listType);
+
+            return list;
+        }else return null;
+    }
+
     private Movie checkNgetMovie(){
         if(myPrefsMovie.contains(id_movie+"")){
             Gson gson = new Gson();
@@ -194,6 +234,18 @@ public class MovieDetailActivity extends AppCompatActivity {
             Movie movie = gson.fromJson(json, Movie.class);
             return movie;
         }else return null;
+    }
+
+    private void saveOffline(String name, List list){
+        Gson gson = new Gson();
+        SharedPreferences.Editor myPrefsEdit = myPrefsMovie.edit();
+        Type listType = null;
+        if(name.endsWith("casts"))listType = new TypeToken<List<Cast>>(){}.getType();
+        else listType = new TypeToken<List<Trailer>>(){}.getType();
+
+        String json = gson.toJson(list, listType);
+        myPrefsEdit.putString(name, json);
+        myPrefsEdit.commit();
     }
 
     private void saveOfflineMovie(String name, Movie movie){
@@ -224,6 +276,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
                     .into(md_poster);
         }
+        poster_path = movie.getPosterPath();
         getCasts(movie);
         getTrailers(movie);
         if(connection_type.equals("online")) saveOfflineMovie(id_movie+"", movie);
@@ -240,7 +293,6 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onSuccess(Movie movie) {
                 getMovieDetailPlus("online", movie);
             }
-
             @Override
             public void onError() {
                 finish();
@@ -248,35 +300,44 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getCastsPlus(String connection_type, List<Cast> casts){
+        if(!casts.isEmpty()) md_castsLabel.setVisibility(View.VISIBLE);
+        md_casts.removeAllViews();
+        for (final Cast cast : casts) {
+            View parent = getLayoutInflater().inflate(R.layout.thumb_cast, md_casts, false);
+            ImageView thumb_actor_view = parent.findViewById(R.id.actor_poster);
+            TextView actor_name = parent.findViewById(R.id.actor_name);
+            thumb_actor_view.requestLayout();
+            thumb_actor_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String query = cast.getActorName()+" in the movie "+md_title.getText();
+                    Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                    intent.putExtra(SearchManager.QUERY, query);
+                    startActivity(intent);
+                }
+            });
+            actor_name.setText(cast.getActorName());
+            Glide.with(MovieDetailActivity.this)
+                    .load(CAST_URL + cast.getProfileImagePath())
+                    .apply(RequestOptions.placeholderOf(R.drawable.baseline_person_pin_24).centerCrop())
+                    .into(thumb_actor_view);
+            md_casts.addView(parent);
+        }
+        if(connection_type.equals("online")) saveOffline(id_movie+"_casts", casts);
+    }
+
     private void getCasts(Movie movie) {
+        List<Cast> casts_check = checkNget(id_movie+"_casts");
+        if(casts_check != null){
+            getCastsPlus("offline", casts_check);
+            return;
+        }
         moviesRepo.getCasts(movie.getId(), new CallbackCast() {
             @Override
             public void onSuccess(List<Cast> casts) {
-                if(!casts.isEmpty()) md_castsLabel.setVisibility(View.VISIBLE);
-                md_casts.removeAllViews();
-                for (final Cast cast : casts) {
-                    View parent = getLayoutInflater().inflate(R.layout.thumb_cast, md_casts, false);
-                    ImageView thumb_actor_view = parent.findViewById(R.id.actor_poster);
-                    TextView actor_name = parent.findViewById(R.id.actor_name);
-                    thumb_actor_view.requestLayout();
-                    thumb_actor_view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String query = cast.getActorName()+" in the movie "+md_title.getText();
-                            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                            intent.putExtra(SearchManager.QUERY, query);
-                            startActivity(intent);
-                        }
-                    });
-                    actor_name.setText(cast.getActorName());
-                    Glide.with(MovieDetailActivity.this)
-                            .load(CAST_URL + cast.getProfileImagePath())
-                            .apply(RequestOptions.placeholderOf(R.drawable.baseline_person_pin_24).centerCrop())
-                            .into(thumb_actor_view);
-                    md_casts.addView(parent);
-                }
+                getCastsPlus("online", casts);
             }
-
             @Override
             public void onError() {
                 md_castsLabel.setVisibility(View.GONE);
@@ -284,32 +345,41 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getTrailersPlus(String connection_type, List<Trailer> trailers){
+        if(!trailers.isEmpty()) md_trailersLabel.setVisibility(View.VISIBLE);
+        md_trailers.removeAllViews();
+        for (final Trailer trailer : trailers) {
+            View parent = getLayoutInflater().inflate(R.layout.thumb_trailer, md_trailers, false);
+            ImageView thumb_trailer_view = parent.findViewById(R.id.trailer_poster);
+            TextView trailer_title = parent.findViewById(R.id.trailer_name);
+            thumb_trailer_view.requestLayout();
+            thumb_trailer_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchTrailer(String.format(YT_URL, trailer.getKey()));
+                }
+            });
+            trailer_title.setText(trailer.getTitle());
+            Glide.with(MovieDetailActivity.this)
+                    .load(String.format(YT_THUMB_URL, trailer.getKey()))
+                    .apply(RequestOptions.placeholderOf(R.color.colorPrimary).centerCrop())
+                    .into(thumb_trailer_view);
+            md_trailers.addView(parent);
+        }
+        if(connection_type.equals("online")) saveOffline(id_movie+"_trailers", trailers);
+    }
+
     private void getTrailers(Movie movie) {
+        List<Trailer> trailers_check = checkNget(id_movie+"_trailers");
+        if(trailers_check != null){
+            getTrailersPlus("offline", trailers_check);
+            return;
+        }
         moviesRepo.getTrailers(movie.getId(), new CallbackTrailers() {
             @Override
             public void onSuccess(List<Trailer> trailers) {
-                if(!trailers.isEmpty()) md_trailersLabel.setVisibility(View.VISIBLE);
-                md_trailers.removeAllViews();
-                for (final Trailer trailer : trailers) {
-                    View parent = getLayoutInflater().inflate(R.layout.thumb_trailer, md_trailers, false);
-                    ImageView thumb_trailer_view = parent.findViewById(R.id.trailer_poster);
-                    TextView trailer_title = parent.findViewById(R.id.trailer_name);
-                    thumb_trailer_view.requestLayout();
-                    thumb_trailer_view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            launchTrailer(String.format(YT_URL, trailer.getKey()));
-                        }
-                    });
-                    trailer_title.setText(trailer.getTitle());
-                    Glide.with(MovieDetailActivity.this)
-                            .load(String.format(YT_THUMB_URL, trailer.getKey()))
-                            .apply(RequestOptions.placeholderOf(R.color.colorPrimary).centerCrop())
-                            .into(thumb_trailer_view);
-                    md_trailers.addView(parent);
-                }
+                getTrailersPlus("online", trailers);
             }
-
             @Override
             public void onError() {
                 md_trailersLabel.setVisibility(View.GONE);
@@ -367,6 +437,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         }, duration/2);
         //onBackPressed();
         return true;
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void errorToast() {
