@@ -149,12 +149,20 @@
                 app:layout_constraintStart_toEndOf="@+id/card_poster"
                 app:layout_constraintTop_toBottomOf="@+id/md_genres" />
 
+            <ImageView
+                android:id="@+id/separator1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/separator"
+                app:layout_constraintTop_toBottomOf="@+id/card_poster"/>
+
             <TextView
                 android:id="@+id/md_summarylabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="31dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="16dp"
                 android:text="Summary"
                 android:textSize="24sp"
@@ -162,7 +170,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_poster" />
+                app:layout_constraintTop_toBottomOf="@+id/separator1" />
 
             <TextView
                 android:id="@+id/md_overview"
@@ -171,7 +179,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="3dp"
                 android:layout_marginRight="16dp"
                 android:alpha="0.7"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -179,12 +187,21 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/md_summarylabel" />
 
+            <ImageView
+                android:id="@+id/separator2"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/separator"
+                app:layout_constraintTop_toBottomOf="@+id/md_overview"/>
+
             <TextView
                 android:id="@+id/md_castslabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginRight="16dp"
                 android:text="Casts"
                 android:textAlignment="center"
@@ -192,7 +209,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/md_overview" />
+                app:layout_constraintTop_toBottomOf="@+id/separator2" />
 
             <HorizontalScrollView
                 android:id="@+id/md_container_cast"
@@ -213,12 +230,21 @@
                     android:orientation="horizontal" />
             </HorizontalScrollView>
 
+            <ImageView
+                android:id="@+id/separator3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/separator"
+                app:layout_constraintTop_toBottomOf="@+id/md_container_cast"/>
+
             <TextView
                 android:id="@+id/md_trailerslabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginRight="16dp"
                 android:text="Trailers"
                 android:textAlignment="textEnd"
@@ -226,7 +252,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/md_container_cast" />
+                app:layout_constraintTop_toBottomOf="@+id/separator3" />
 
             <HorizontalScrollView
                 android:id="@+id/md_container"
