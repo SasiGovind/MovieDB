@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#616161</color> <!-- #D81B60 -->
-
+    <color name="colorPrimary">#212121</color>
     <color name="exit_top">#ADADAD</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="buttonNo">#FF5722</color>
     <color name="buttonYes">#4CAF50</color>
+    <color name="colorAccent">#FF1744</color>
+    <color name="white">#FFFFFF</color>
     <color name="background_light">#efefef</color>
     <color name="colorAccentDark">#cecece</color>
 </resources>
