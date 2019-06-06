@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#212121</color>
-    <color name="exit_top">#ADADAD</color>
+    <color name="colorPrimaryBis">#808080</color>
+    <color name="exit_text">#ADADAD</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="buttonNo">#FF5722</color>
     <color name="buttonYes">#4CAF50</color>
