@@ -156,10 +156,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureBottomNavigationView(){
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item));
     }
 
-    private Boolean updateMainFragment(Integer integer){
+    private Boolean updateMainFragment(MenuItem item){
+        Integer integer = item.getItemId();
         if(integer != R.id.previous && integer != R.id.next)currentPage = 1;
         switch (integer) {
             case R.id.previous:

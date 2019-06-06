@@ -10,6 +10,7 @@
         android:layout_height="70dp"
         android:background="@drawable/dialog_round_up"
         android:gravity="center_horizontal"
+        android:alpha="0.85"
         android:orientation="horizontal">
 
         <ImageView
@@ -40,6 +41,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
+        android:alpha="0.9"
         android:background="@drawable/dialog_round_down"
         android:gravity="center_horizontal">
 
@@ -47,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Are you trying to quit ?"
+            android:textColor="@color/exit_text"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textSize="30sp" />
@@ -55,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textColor="@color/exit_text"
             android:text="Take a deep breath before taking the right decision."
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -76,7 +80,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/no_button_bg"
                 android:text="Nope I'll Stay"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/exit_text" />
 
             <Button
                 android:id="@+id/buttonOk"
@@ -87,7 +91,7 @@
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/yes_button_bg"
                 android:text="Yeah I'll Come Later"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/exit_text" />
 
         </LinearLayout>
 
