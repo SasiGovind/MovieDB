@@ -3,6 +3,7 @@ package com.sasig.moviedb.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -20,6 +21,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, p1, p2, p3, p4);
             Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
             intent.putExtra(MovieDetailActivity.ID_MOVIE, movie.getId());
+            intent.putExtra("lang", moviesRepo.LANG);
             startActivity(intent, options.toBundle());
         }
     };
@@ -102,6 +106,53 @@ public class MainActivity extends AppCompatActivity {
 
         //// ALERT : BE CAREFUL AT THIS MAY CAUSE APP CRASH WITHOUT EXPLICATIONS (PLACER A LA FIN EXPRES)
         bottomNavigationView.getMenu().findItem(R.id.popular).setChecked(true);//setSelectedItemId(R.id.top_rated);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.movie_main_options, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.english:
+            if(MoviesRepo.LANG != "en-US"){
+                item.setChecked(true);
+                moviesRepo.setLANG("en-US");
+                manualRefresh();
+            }
+                return true;
+            case R.id.french:
+            if(MoviesRepo.LANG != "fr-FR"){
+                item.setChecked(true);
+                moviesRepo.setLANG("fr-FR");
+                manualRefresh();
+            }
+                return true;
+            case R.id.cache_erase:
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                cache_erase();
+                                Toast.makeText(MainActivity.this, "All offline storage erased !", Toast.LENGTH_SHORT).show();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                dialog.dismiss();
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure to erase all stored data ?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void configureBottomNavigationView(){
@@ -138,22 +189,43 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                currentPage = 1;
-                adapter.clearMovies();
-                SharedPreferences.Editor editor = myPrefs.edit();
-                Map<String, ?> allEntries = myPrefs.getAll();
-                if(isOnline()){
-                    for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                        Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                        if(entry.getKey().startsWith(sortBy)){ //if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
-                            editor.remove(entry.getKey());
-                            editor.apply();
-                        }
-                    }
-                }
-                getMovies(currentPage);//getGenres();//swipeRefresh.setRefreshing(false);
+                manualRefresh();
             }
         });
+    }
+
+    private void manualRefresh(){
+        currentPage = 1;
+        adapter.clearMovies();
+        SharedPreferences.Editor editor = myPrefs.edit();
+        Map<String, ?> allEntries = myPrefs.getAll();
+        if(isOnline()){
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                if(entry.getKey().startsWith(sortBy)){ //if(entry.getKey().startsWith(sortBy) || entry.getKey().startsWith("genres")){
+                    editor.remove(entry.getKey());
+                    editor.apply();
+                }
+            }
+        }
+        /*if(resetGenres && myPrefs.contains("genres")){
+            editor.remove("genres");
+            editor.commit();
+            getGenres();
+        }else */
+        getMovies(currentPage);//getGenres();//swipeRefresh.setRefreshing(false);
+    }
+
+    private void cache_erase() {
+        currentPage = 1;
+        adapter.clearMovies();
+        SharedPreferences.Editor editor = myPrefs.edit();
+        Map<String, ?> allEntries = myPrefs.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                editor.remove(entry.getKey());
+                editor.apply();
+        }
+        //getGenres();
     }
 
     private void navigateOnPage(int page){ // Not compatible with offline storage

@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesRepo {
     private static final String URL = "https://api.themoviedb.org/3/";
-    private static final String LANG = "en-US";
+    public static String LANG = "en-US";
 
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
@@ -157,6 +157,8 @@ public class MoviesRepo {
                 });
     }
 
+
+
     public void getGenres(final CallbackGenres callback) {
         api.getGenres(BuildConfig.APIKEY, LANG)
                 .enqueue(new Callback<ResGenres>() {
@@ -179,6 +181,10 @@ public class MoviesRepo {
                         }
                     }
                 });
+    }
+
+    public void setLANG(String lang){
+        this.LANG = lang;
     }
 
 }

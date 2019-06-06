@@ -90,6 +90,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Log.d("MoviesID", "Movie id = "+id_movie);
 
         moviesRepo = MoviesRepo.getInstance();
+        moviesRepo.setLANG(getIntent().getStringExtra("lang"));
 
         configureToolbar();
         gatherMovieUI();
@@ -228,7 +229,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private Movie checkNgetMovie(){
-        if(myPrefsMovie.contains(id_movie+"")){
+        if(myPrefsMovie.contains(id_movie+""+moviesRepo.LANG)){
             Gson gson = new Gson();
             String json = myPrefsMovie.getString(id_movie+"", "");
             Movie movie = gson.fromJson(json, Movie.class);
@@ -252,7 +253,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Gson gson = new Gson();
         SharedPreferences.Editor myPrefsEdit = myPrefsMovie.edit();
         String json = gson.toJson(movie, Movie.class);
-        myPrefsEdit.putString(name, json);
+        myPrefsEdit.putString(name+moviesRepo.LANG, json);
         myPrefsEdit.commit();
     }
 
