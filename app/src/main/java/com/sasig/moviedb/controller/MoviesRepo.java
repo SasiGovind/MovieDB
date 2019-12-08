@@ -5,6 +5,7 @@ import android.util.Log;
 import com.sasig.moviedb.BuildConfig;
 import com.sasig.moviedb.model.ApiTMDB;
 import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.model.People;
 import com.sasig.moviedb.model.ResCast;
 import com.sasig.moviedb.model.ResGenres;
 import com.sasig.moviedb.model.ResMovies;
@@ -64,6 +65,30 @@ public class MoviesRepo {
 
                     @Override
                     public void onFailure(Call<Movie> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+    }
+
+    public void getPeople(int id_people, final CallbackPeople callback){
+        api.getPeople(id_people, BuildConfig.APIKEY, LANG)
+                .enqueue(new Callback<People>() {
+                    @Override
+                    public void onResponse(Call<People> call, Response<People> resp) {
+                        if (resp.isSuccessful()) {
+                            People people = resp.body();
+                            if (people != null) {
+                                callback.onSuccess(people);
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<People> call, Throwable t) {
                         callback.onError();
                     }
                 });
