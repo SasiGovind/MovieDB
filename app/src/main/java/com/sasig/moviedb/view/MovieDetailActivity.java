@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,11 +37,13 @@ import com.google.gson.reflect.TypeToken;
 import com.sasig.moviedb.R;
 import com.sasig.moviedb.controller.CallbackCast;
 import com.sasig.moviedb.controller.CallbackMovie;
+import com.sasig.moviedb.controller.CallbackPeople;
 import com.sasig.moviedb.controller.CallbackTrailers;
 import com.sasig.moviedb.controller.MoviesRepo;
 import com.sasig.moviedb.model.Cast;
 import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
+import com.sasig.moviedb.model.People;
 import com.sasig.moviedb.model.Trailer;
 
 import java.lang.reflect.Type;
@@ -74,6 +79,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private MoviesRepo moviesRepo;
     private int id_movie;
 
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
     SharedPreferences myPrefsMovie;
 
     @Override
@@ -97,6 +105,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         setZoomPoster();
         getMovieDetail();
         animTitleOn();
+
+        fragmentManager = getSupportFragmentManager();
     }
 
     @Override
@@ -312,10 +322,23 @@ public class MovieDetailActivity extends AppCompatActivity {
             thumb_actor_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String query = cast.getActorName()+" in the movie "+md_title.getText();
+                    //Toast.makeText(MovieDetailActivity.this, "Actor : "+cast.getActorName()+", B :" +cast.getActorId()+"; P : "+cast.getProfileImagePath(), Toast.LENGTH_SHORT).show();
+                    moviesRepo.getPeople(cast.getActorId(), new CallbackPeople() {
+                        @Override
+                        public void onSuccess(People people) {
+                            //Toast.makeText(MovieDetailActivity.this, "Actor B : "+people.getBiography(), Toast.LENGTH_SHORT).show();
+                            displayPeople(people);
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                    /*String query = cast.getActorName()+" in the movie "+md_title.getText();
                     Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
                     intent.putExtra(SearchManager.QUERY, query);
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
             });
             actor_name.setText(cast.getActorName());
@@ -421,9 +444,35 @@ public class MovieDetailActivity extends AppCompatActivity {
         });*/
     }
 
+    private void displayPeople (People people) {
+        PeopleFragment peopleFragment = new PeopleFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("name", people.getActorName());
+        bundle.putString("biography", people.getBiography());
+        bundle.putString("picture", people.getProfileImagePath());
+        bundle.putString("birthday", people.getBirthday());
+        bundle.putString("birthplace", people.getPlaceOfBirth());
+        bundle.putString("popularity", people.getPopularity());
+        bundle.putString("movie", md_title.getText().toString());
+        peopleFragment.setArguments(bundle);
+
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainer, peopleFragment);
+        //fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onBackPressed() {
-        onSupportNavigateUp();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+        if(fragment != null){
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
+        }else{
+            onSupportNavigateUp();
+        }
     }
 
     @Override

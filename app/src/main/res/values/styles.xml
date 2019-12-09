@@ -9,9 +9,18 @@
 
     <!--Style for Splash Screen-->
     <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name ="android:windowBackground"> @drawable/splash_screen_background</item>
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
         <!-- Enable window content Transitions - Either specify here or specify in the Activity -->
         <!-- <item name="android:windowContentTransitions">true</item> -->
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
