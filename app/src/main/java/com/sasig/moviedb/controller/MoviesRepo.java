@@ -24,6 +24,7 @@ public class MoviesRepo {
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
     public static final String UPCOMING = "upcoming";
+    public static final String SEARCH = "search";
 
     private static MoviesRepo repo;
 
@@ -102,7 +103,7 @@ public class MoviesRepo {
                 if (resp.isSuccessful()) {
                     ResMovies responseMovie = resp.body();
                     if (responseMovie != null && responseMovie.getMovies() != null) {
-                        callback.onSuccess(responseMovie.getMovies(), responseMovie.getPage());
+                        callback.onSuccess(responseMovie.getMovies(), responseMovie.getPage(), responseMovie.getTotalPages());
                     } else {
                         callback.onError();
                     }
@@ -132,6 +133,30 @@ public class MoviesRepo {
                         .enqueue(call);
                 break;
         }
+    }
+
+    public void getSearchMovies(String query, int page, final CallbackMovies callback){
+        api.getSearchMovie(query, page, BuildConfig.APIKEY, LANG)
+                .enqueue(new Callback<ResMovies>() {
+                    @Override
+                    public void onResponse(Call<ResMovies> call, Response<ResMovies> resp) {
+                        if (resp.isSuccessful()) {
+                            ResMovies responseMovie = resp.body();
+                            if (responseMovie != null && responseMovie.getMovies() != null) {
+                                callback.onSuccess(responseMovie.getMovies(), responseMovie.getPage(), responseMovie.getTotalPages());
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResMovies> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
     }
 
     public void getCasts(int id_movie, final CallbackCast callback) {

@@ -69,4 +69,13 @@ public interface ApiTMDB {
             @Query("api_key") String api_key,
             @Query("language") String language
     );
+
+    ///// Pour Movie Search
+    @GET("search/movie")
+    Call<ResMovies> getSearchMovie(
+            @Query("query") String query,
+            @Query("page") int page,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
 }
