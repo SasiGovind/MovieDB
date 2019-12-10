@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sasig.moviedb.R;
 import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
-import com.sasig.moviedb.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +82,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.ViewHolder
 
         public void bind(Movie movie) {
             this.movie = movie;
-            releaseDate.setText(movie.getReleaseDate().split("-")[0]);
+            releaseDate.setText((movie.getReleaseDate()!=null)?movie.getReleaseDate().split("-")[0]:"");
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
             genres.setText(getGenres(movie.getGenreIds()));

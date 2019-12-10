@@ -19,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -44,18 +45,21 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private RecyclerView movies_list;
     private AdapterMovies adapter;
     private MoviesRepo moviesRepo;
     private BottomNavigationView bottomNavigationView;
     private SwipeRefreshLayout swipeRefresh;
+    private SearchView searchView;
+    private MenuItem menuItem;
 
     SharedPreferences myPrefs;
 
     private List<Genre> genres_list;
     private String sortBy = MoviesRepo.POPULAR;
+    private String lastSearchMovie = "";
     private boolean moviesFetching;
     private int currentPage = 1;
     private Activity act;
@@ -110,7 +114,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //Search Movie
         getMenuInflater().inflate(R.menu.movie_main_options, menu);
+        menuItem = menu.findItem(R.id.movie_search);
+        searchView = (SearchView) menuItem.getActionView();
+        //searchView.setQueryHint("Search movie");
+        /*menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) { // work
+                Toast.makeText(MainActivity.this, "Test !", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() { //doesn't work
+            @Override
+            public boolean onClose() {
+                Toast.makeText(MainActivity.this, "Close !", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });*/
+        searchView.setOnQueryTextListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -155,6 +178,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        //Toast.makeText(MainActivity.this, "Verify : "+query, Toast.LENGTH_SHORT).show();
+        lastSearchMovie = query;
+        getSearchMovies(lastSearchMovie, 1);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        lastSearchMovie = query;
+        return false;
+    }
+
     private void configureBottomNavigationView(){
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item));
     }
@@ -190,9 +227,21 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                clear_searchview();
                 manualRefresh();
             }
         });
+    }
+
+    private void clear_searchview() {
+        searchView.onActionViewExpanded();
+        searchView.setQuery("", false);
+        lastSearchMovie = "";
+        menuItem.collapseActionView(); //searchView.onActionViewCollapsed(); //searchView.clearFocus();
+    }
+
+    private void clearOfflineCurrentSortbyEntriesIfOnline(){
+        // optimise manualRefresh, cache_erase, navigate_pages
     }
 
     private void manualRefresh(){
@@ -233,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
         currentPage = (page > 0)?page:1;
         adapter.clearMovies();
         SharedPreferences.Editor editor = myPrefs.edit();
-
         Map<String, ?> allEntries = myPrefs.getAll();
         if(isOnline()){
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
@@ -248,6 +296,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void scrollListener() {
+/*        if(searchView != null && searchView.isIconified()){
+            Toast.makeText(MainActivity.this, "Open !", Toast.LENGTH_SHORT).show();
+        }else Toast.makeText(MainActivity.this, "Closed !", Toast.LENGTH_SHORT).show();*/
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         movies_list.setLayoutManager(manager);
         movies_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -256,10 +307,14 @@ public class MainActivity extends AppCompatActivity {
                 int totalItems = manager.getItemCount();
                 int visibleItems = manager.getChildCount();
                 int firstScreenItem = manager.findFirstVisibleItemPosition();
-
-                if (firstScreenItem + visibleItems >= totalItems / 2) {
+                int newPageLimit;
+                if(totalItems < 40) newPageLimit = totalItems / 2;
+                else newPageLimit = totalItems-20;
+                //Toast.makeText(MainActivity.this, "Scroll : "+firstScreenItem+" + "+visibleItems+" >= "+newPageLimit, Toast.LENGTH_SHORT).show();
+                if (firstScreenItem + visibleItems >= newPageLimit) {
                     if (!moviesFetching) {
-                        getMovies(currentPage + 1);
+                        if(lastSearchMovie!="") getSearchMovies(lastSearchMovie, currentPage + 1);
+                        else getMovies(currentPage + 1);
                     }
                 }
             }
@@ -343,8 +398,48 @@ public class MainActivity extends AppCompatActivity {
 
         moviesRepo.getMovies(page, sortBy, new CallbackMovies() {
             @Override
-            public void onSuccess(List<Movie> movies, int page) {
+            public void onSuccess(List<Movie> movies, int page, int totalPages) {
+                if(page > totalPages){
+                    Toast.makeText(MainActivity.this, "Total "+totalPages+" pages loaded", Toast.LENGTH_SHORT).show();
+                    //moviesFetching = false; //enable this to display total loaded toast each time user reach the limit
+                    return;
+                }
                 getMoviePlus("online", movies, page);
+            }
+
+            @Override
+            public void onError() {
+                errorToast();
+            }
+        });
+    }
+
+    private void getSearchMovies(String query, int page) {
+        moviesFetching = true;
+
+        moviesRepo.getSearchMovies(query, page, new CallbackMovies() {
+            @Override
+            public void onSuccess(List<Movie> movies, int page, int totalPages) {
+                if(page > totalPages){
+                    if(totalPages == 0) Toast.makeText(MainActivity.this, "No result found", Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(MainActivity.this, "Total "+totalPages+" pages loaded", Toast.LENGTH_SHORT).show();
+                    //moviesFetching = false; //enable this to display total loaded toast each time user reach the limit
+                    return;
+                }
+                if (adapter == null) {
+                    adapter = new AdapterMovies(movies, genres_list, callbackMoviesClick);
+                    movies_list.setAdapter(adapter);
+                } else {
+                    if (page == 1) {
+                        adapter.clearMovies();
+                    }
+                    adapter.addMovies(movies);
+                }
+                Toast.makeText(MainActivity.this, "Pages loaded : "+page, Toast.LENGTH_SHORT).show();
+                currentPage = page;
+                moviesFetching = false;
+                //setAppTitle();
+                swipeRefresh.setRefreshing(false);
             }
 
             @Override
