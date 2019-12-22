@@ -10,11 +10,19 @@
         app:showAsAction="always|withText|collapseActionView" ></item>
 
     <item
-        android:id="@+id/cache_erase"
-        android:enabled="true"
+        android:id="@+id/action_genres_selection"
         android:icon="@drawable/baseline_clear_all_24"
-        android:title="cache_erase"
-        app:showAsAction="always" />
+        android:title="lang"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/select_all"
+                android:title="Select all" />
+            <item
+                android:id="@+id/deselect_all"
+                android:title="Deselect all" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/action_sort_by"
@@ -35,6 +43,12 @@
                     android:id="@+id/french"
                     android:title="Fr" />
             </group>
+            <item
+                android:id="@+id/cache_erase"
+                android:enabled="true"
+                android:icon="@drawable/baseline_clear_all_24"
+                android:title="Cache Erase"
+                app:showAsAction="always" />
         </menu>
     </item>
 
