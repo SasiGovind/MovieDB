@@ -12,9 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -79,9 +76,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     private MoviesRepo moviesRepo;
     private int id_movie;
 
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
     SharedPreferences myPrefsMovie;
 
     @Override
@@ -106,7 +100,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         getMovieDetail();
         animTitleOn();
 
-        fragmentManager = getSupportFragmentManager();
     }
 
     @Override
@@ -327,7 +320,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(People people) {
                             //Toast.makeText(MovieDetailActivity.this, "Actor B : "+people.getBiography(), Toast.LENGTH_SHORT).show();
-                            displayPeople(people);
+                            Intent peopleIntent = new Intent(MovieDetailActivity.this, PeopleActivity.class);
+                            peopleIntent.putExtra("people", people);
+                            peopleIntent.putExtra("movie_title", md_title.getText().toString());
+                            startActivity(peopleIntent);
                         }
 
                         @Override
@@ -444,35 +440,16 @@ public class MovieDetailActivity extends AppCompatActivity {
         });*/
     }
 
-    private void displayPeople (People people) {
-        PeopleFragment peopleFragment = new PeopleFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("name", people.getActorName());
-        bundle.putString("biography", people.getBiography());
-        bundle.putString("picture", people.getProfileImagePath());
-        bundle.putString("birthday", people.getBirthday());
-        bundle.putString("birthplace", people.getPlaceOfBirth());
-        bundle.putString("popularity", people.getPopularity());
-        bundle.putString("movie", md_title.getText().toString());
-        peopleFragment.setArguments(bundle);
-
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainer, peopleFragment);
-        //fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
     @Override
     public void onBackPressed() {
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+        /*Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
         if(fragment != null){
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(fragment);
             fragmentTransaction.commit();
-        }else{
+        }else{*/
             onSupportNavigateUp();
-        }
+        //}
     }
 
     @Override
