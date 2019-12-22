@@ -2,7 +2,9 @@ package com.sasig.moviedb.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class People {
+import java.io.Serializable;
+
+public class People implements Serializable {
     @SerializedName("name")
     private String actorName;
 
