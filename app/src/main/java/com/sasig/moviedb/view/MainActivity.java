@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ import com.sasig.moviedb.model.Genre;
 import com.sasig.moviedb.model.Movie;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,10 +56,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private SwipeRefreshLayout swipeRefresh;
     private SearchView searchView;
     private MenuItem menuItem;
+    private Menu menuOptions;
 
     SharedPreferences myPrefs;
 
     private List<Genre> genres_list;
+    private List<Genre> genres_keep_list;
     private String sortBy = MoviesRepo.POPULAR;
     private String lastSearchMovie = "";
     private boolean moviesFetching;
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         this.configureBottomNavigationView();
         configureRefreshView();
         scrollListener();
-        getGenres();
+        // GetGenres(retrieve genre and movies) = CALLED ON onCreateOptionsMenu(Menu menu)
 
         //// ALERT : BE CAREFUL AT THIS MAY CAUSE APP CRASH WITHOUT EXPLICATIONS (PLACER A LA FIN EXPRES)
         bottomNavigationView.getMenu().findItem(R.id.popular).setChecked(true);//setSelectedItemId(R.id.top_rated);
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         getMenuInflater().inflate(R.menu.movie_main_options, menu);
         menuItem = menu.findItem(R.id.movie_search);
         searchView = (SearchView) menuItem.getActionView();
+
         //searchView.setQueryHint("Search movie");
         /*menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -134,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });*/
         searchView.setOnQueryTextListener(this);
+        menuOptions = menu;
+        getGenres(true); // Called here because it requires menuOptions to be setted
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -173,9 +180,39 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 builder.setMessage("Are you sure to erase all stored data ?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            case R.id.select_all:
+                if(menuOptions != null){
+                    SubMenu genresMenu = menuOptions.findItem(R.id.action_genres_selection).getSubMenu();
+                    for (int i = 0; i < genresMenu.size(); i++){
+                        genresMenu.getItem(i).setChecked(true);
+                        genres_keep_list = new ArrayList<>(genres_list);
+                    }
+                    manualRefresh();
+                }
+                return true;
+            case R.id.deselect_all:
+                if(menuOptions != null){
+                    SubMenu genresMenu = menuOptions.findItem(R.id.action_genres_selection).getSubMenu();
+                    for (int i = 0; i < genresMenu.size(); i++){
+                        genresMenu.getItem(i).setChecked(false);
+                        genres_keep_list = new ArrayList<>();
+                    }
+                    manualRefresh();
+                }
+                return true;
         }
+        // genres checking
+        int itemId = item.getItemId();
+        for(Genre g : genres_list){
+            if(itemId == g.getId()) {
+                item.setChecked(!item.isChecked());
+                if(item.isChecked()) genres_keep_list.add(g);
+                else genres_keep_list.remove(g);
+                manualRefresh();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -347,18 +384,37 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         myPrefsEdit.commit();
     }
 
-    private void getGenres() {
+    private void setGenres(List<Genre> genres){
+        genres_list = genres;
+        genres_keep_list = new ArrayList<>(genres_list);
+        genres_setup(menuOptions);
+    }
+
+    private void genres_setup(Menu menuOptions){
+        if(menuOptions != null){
+            SubMenu genresMenu = menuOptions.findItem(R.id.action_genres_selection).getSubMenu();
+            if(genres_list == null) {
+                while (genres_list == null){}
+            }
+            for (int i = 0; i < genres_list.size(); i++){
+                Genre genre = genres_list.get(i);
+                genresMenu.add(Menu.NONE, genre.getId(), Menu.NONE, genre.getName()).setCheckable(true).setChecked(true);
+            }
+        }
+    }
+
+    private void getGenres(boolean movieCall) {
         List<Genre> genres_check = checkNget("genres");
         if(genres_check != null){
-            genres_list = genres_check;
-            getMovies(currentPage);
+            setGenres(genres_check);
+            if(movieCall) getMovies(currentPage);
             return;
         }
         moviesRepo.getGenres(new CallbackGenres() {
             @Override
             public void onSuccess(List<Genre> genres) {
-                genres_list = genres;
-                getMovies(currentPage);
+                setGenres(genres);
+                if(movieCall) getMovies(currentPage);
                 saveOffline("genres", genres);
             }
 
@@ -369,7 +425,38 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
     }
 
-    private void getMoviePlus(String connection_type, List moviesList, int page){
+    private List<Movie> remove_unwanted_movies(List<Movie> moviesList){
+        List<Movie> movies = new ArrayList<Movie>(moviesList);
+        List<Integer> ids = new ArrayList<>();
+        for(Genre g : genres_keep_list) ids.add(g.getId());
+        for(Movie movie : movies){
+            boolean keep_movie = false;
+            List<Integer> genresId = movie.getGenreIds();
+            for(Integer i : genresId){
+                if(ids.contains(i)) {
+                    keep_movie = true;
+                    continue;
+                }
+                /*boolean nextId = false;
+                for(Genre g : genres_keep_list){
+                    if(i == g.getId()){
+                        moviesList.remove(movie);
+                        next = true;
+                        nextId = true;
+                        break;
+                    }
+                }
+                if(nextId) break;*/
+            }
+            if(!keep_movie) moviesList.remove(movie);
+            //if(next) continue;
+        }
+        return moviesList;
+    }
+
+    private void getMoviePlus(String connection_type, List<Movie> moviesList, int page){
+        moviesList = remove_unwanted_movies(moviesList);
+
         if (adapter == null) {
             adapter = new AdapterMovies(moviesList, genres_list, callbackMoviesClick);
             movies_list.setAdapter(adapter);
