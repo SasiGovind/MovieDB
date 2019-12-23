@@ -23,11 +23,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.ZoomActivity" />
         <activity
-            android:name=".view.SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:name=".view.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
