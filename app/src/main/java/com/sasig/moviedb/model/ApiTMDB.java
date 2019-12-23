@@ -78,4 +78,13 @@ public interface ApiTMDB {
             @Query("api_key") String api_key,
             @Query("language") String language
     );
+
+    ///// Pour Similar Movies
+    @GET("movie/{movie_id}/similar")
+    Call<ResMovies> getSimilarMovies(
+            @Path("movie_id") int id,
+            @Query("page") int page,
+            @Query("api_key") String api_key,
+            @Query("language") String language
+    );
 }

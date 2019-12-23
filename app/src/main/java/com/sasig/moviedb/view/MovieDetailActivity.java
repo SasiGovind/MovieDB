@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sasig.moviedb.R;
 import com.sasig.moviedb.controller.CallbackCast;
 import com.sasig.moviedb.controller.CallbackMovie;
+import com.sasig.moviedb.controller.CallbackMovies;
 import com.sasig.moviedb.controller.CallbackPeople;
 import com.sasig.moviedb.controller.CallbackTrailers;
 import com.sasig.moviedb.controller.MoviesRepo;
@@ -54,6 +55,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private static String BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
     private static String POSTER_ORIGINAL_URL = "https://image.tmdb.org/t/p/original";
     private static String POSTER_URL = "https://image.tmdb.org/t/p/w500";
+    private static String POSTER_XS_URL = "https://image.tmdb.org/t/p/w185";
     private static String CAST_URL = "https://image.tmdb.org/t/p/w185";
     private static String YT_URL = "https://www.youtube.com/watch?v=%s";
     private static String YT_THUMB_URL = "https://img.youtube.com/vi/%s/0.jpg";
@@ -68,7 +70,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private RatingBar md_rating;
     private TextView md_trailersLabel;
     private TextView md_castsLabel;
+    private TextView md_similarlabel;
     private LinearLayout md_casts;
+    private LinearLayout md_similar;
     private LinearLayout md_trailers;
     private LinearLayout md_reviews;
     private String poster_path;
@@ -197,6 +201,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         md_trailersLabel = findViewById(R.id.md_trailerslabel);
         md_castsLabel = findViewById(R.id.md_castslabel);
         md_casts = findViewById(R.id.md_casts);
+        md_similarlabel = findViewById(R.id.md_similarlabel);
+        md_similar = findViewById(R.id.md_similar);
         md_trailers = findViewById(R.id.md_trailers);
         md_reviews = findViewById(R.id.md_reviews);
     }
@@ -223,6 +229,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             String json = myPrefsMovie.getString(key, "");
             Type listType = null;
             if(key.endsWith("casts"))listType = new TypeToken<List<Cast>>(){}.getType();
+            else if(key.endsWith("similars"))listType = new TypeToken<List<Movie>>(){}.getType();
             else listType = new TypeToken<List<Trailer>>(){}.getType();
 
             List list = gson.fromJson(json, listType);
@@ -283,6 +290,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         poster_path = movie.getPosterPath();
         getCasts(movie);
         getTrailers(movie);
+        getSimilarMovies(movie);
         if(connection_type.equals("online")) saveOfflineMovie(id_movie+"", movie);
     }
 
@@ -361,6 +369,62 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onError() {
                 md_castsLabel.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void getSimilarMoviesPlus(String connection_type, List<Movie> similarMovies, int page){
+        if(!similarMovies.isEmpty()) md_similarlabel.setVisibility(View.VISIBLE);
+        md_similar.removeAllViews();
+        for (final Movie movie : similarMovies) {
+            View parent = getLayoutInflater().inflate(R.layout.thumb_similar, md_similar, false);
+            ImageView thumb_similar_poster = parent.findViewById(R.id.similar_poster);
+            TextView thumb_similar_title = parent.findViewById(R.id.similar_title);
+            thumb_similar_poster.requestLayout();
+            thumb_similar_poster.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Pair<View, String> p1 = Pair.create((View)thumb_similar_poster, "poster_shared");
+                    //ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pair1);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieDetailActivity.this, p1);
+                    Intent intent = new Intent(MovieDetailActivity.this, MovieDetailActivity.class);
+                    intent.putExtra(MovieDetailActivity.ID_MOVIE, movie.getId());
+                    intent.putExtra("lang", moviesRepo.LANG);
+                    //Toast.makeText(MainActivity.this, "Movie id : "+movie.getId(), Toast.LENGTH_SHORT).show();
+                    startActivity(intent, options.toBundle());
+                }
+            });
+            thumb_similar_title.setText(movie.getTitle());
+            Glide.with(MovieDetailActivity.this)
+                    .load(POSTER_XS_URL + movie.getPosterPath())
+                    .apply(RequestOptions.placeholderOf(R.color.colorPrimary).centerCrop())
+                    .into(thumb_similar_poster);
+            md_similar.addView(parent);
+        }
+        if(connection_type.equals("online")) saveOffline(id_movie+"_similars", similarMovies);
+    }
+
+    private void getSimilarMovies(Movie movie) {
+        List<Movie> similar_check = checkNget(id_movie+"_similars");
+        if(similar_check != null){
+            getSimilarMoviesPlus("offline", similar_check, 1);
+            return;
+        }
+        moviesRepo.getSimilarMovies(movie.getId(), 1, new CallbackMovies() {
+            @Override
+            public void onSuccess(List<Movie> movies, int page, int totalPages) {
+                if(page > totalPages){
+                    //Toast.makeText(MainActivity.this, "Total "+totalPages+" pages loaded", Toast.LENGTH_SHORT).show();
+                    //moviesFetching = false; //enable this to display total loaded toast each time user reach the limit
+                    return;
+                }
+                getSimilarMoviesPlus("online", movies, page);
+            }
+
+            @Override
+            public void onError() {
+                md_similarlabel.setVisibility(View.GONE);
             }
         });
     }

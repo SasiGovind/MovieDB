@@ -273,6 +273,50 @@
                     android:orientation="horizontal" />
             </HorizontalScrollView>
 
+            <ImageView
+                android:id="@+id/separator4"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/separator"
+                app:layout_constraintTop_toBottomOf="@+id/md_container"/>
+
+            <TextView
+                android:id="@+id/md_similarlabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="16dp"
+                android:text="Similar Movies"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/separator4" />
+
+            <HorizontalScrollView
+                android:id="@+id/md_container_similar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/md_similarlabel">
+
+                <LinearLayout
+                    android:id="@+id/md_similar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
             <TextView
                 android:id="@+id/md_reviewslabel"
                 android:layout_width="0dp"
@@ -285,7 +329,7 @@
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/md_container" />
+                app:layout_constraintTop_toBottomOf="@+id/md_container_similar" />
 
             <LinearLayout
                 android:id="@+id/md_reviews"
