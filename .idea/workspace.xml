@@ -9,14 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2e23ae9-d885-4bf6-99bd-ab4c874c2147" name="Default Changelist" comment="App loading screen">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" afterDir="false" />
-    </list>
+    <list default="true" id="c2e23ae9-d885-4bf6-99bd-ab4c874c2147" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -654,7 +647,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577064157411</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Feature similar movies">
+      <created>1577130183208</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1577130183208</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -779,7 +779,8 @@
     <MESSAGE value="People fragment added on the movie detail activity" />
     <MESSAGE value="Fragment fix" />
     <MESSAGE value="App loading screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="App loading screen" />
+    <MESSAGE value="Feature similar movies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feature similar movies" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ResPeople.java" />
