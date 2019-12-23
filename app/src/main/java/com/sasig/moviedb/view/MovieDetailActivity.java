@@ -328,7 +328,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                         @Override
                         public void onError() {
-
+                            Toast.makeText(MovieDetailActivity.this, "No Data Found : "+ cast.getActorId(), Toast.LENGTH_SHORT).show();
                         }
                     });
                     /*String query = cast.getActorName()+" in the movie "+md_title.getText();

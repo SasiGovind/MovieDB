@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
             intent.putExtra(MovieDetailActivity.ID_MOVIE, movie.getId());
             intent.putExtra("lang", moviesRepo.LANG);
+            //Toast.makeText(MainActivity.this, "Movie id : "+movie.getId(), Toast.LENGTH_SHORT).show();
             startActivity(intent, options.toBundle());
         }
     };
