@@ -9,15 +9,13 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2e23ae9-d885-4bf6-99bd-ab4c874c2147" name="Default Changelist" comment="">
+    <list default="true" id="c2e23ae9-d885-4bf6-99bd-ab4c874c2147" name="Default Changelist" comment="App loading screen">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/SplashScreenActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/SplashScreenActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="72" column="17" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="17" />
+            <state relative-caret-position="201">
+              <caret line="80" column="12" selection-start-line="80" selection-start-column="12" selection-end-line="88" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -73,10 +71,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/Movie.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/AdapterMovies.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
+            <state relative-caret-position="218">
+              <caret line="77" column="41" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -85,62 +83,75 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml">
           <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="410">
+            <state relative-caret-position="850">
               <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/anim/rotate.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="31" lean-forward="true" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/CallbackSplash.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="31" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/ProgressBarAnimation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="637">
-              <caret line="40" column="10" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
+            <state relative-caret-position="133">
+              <caret line="340" column="23" lean-forward="true" selection-start-line="340" selection-start-column="23" selection-end-line="340" selection-end-column="23" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#18442#18443#0" expanded="true" />
+                <element signature="e#18514#18515#0" expanded="true" />
+                <element signature="e#20205#20206#0" expanded="true" />
+                <element signature="e#20272#20273#0" expanded="true" />
+                <element signature="e#20330#20331#0" expanded="true" />
+                <element signature="e#20403#20404#0" expanded="true" />
+                <element signature="e#21822#21823#0" expanded="true" />
+                <element signature="e#21877#21878#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/thumb_cast.xml">
+          <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+            <state relative-caret-position="170">
+              <caret line="10" column="37" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="37" />
             </state>
           </provider>
-          <provider editor-type-id="android-manifest" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/thumb_similar.xml">
+          <provider selected="true" editor-type-id="android-designer2" />
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="53" lean-forward="true" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="651">
-              <caret line="468" column="31" selection-start-line="468" selection-start-column="31" selection-end-line="468" selection-end-column="31" />
+            <state relative-caret-position="282">
+              <caret line="239" column="90" lean-forward="true" selection-start-line="239" selection-start-column="90" selection-end-line="239" selection-end-column="90" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="87" column="46" lean-forward="true" selection-start-line="87" selection-start-column="46" selection-end-line="87" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml">
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="73" column="53" lean-forward="true" selection-start-line="73" selection-start-column="53" selection-end-line="73" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -160,15 +171,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>actor_name</find>
-      <find>casts</find>
-      <find>addFragment</find>
-      <find>thumb_actor_view</find>
-      <find>transparent</find>
-      <find>md_title</find>
-      <find>moviesRepo</find>
-      <find>callbackMoviesClick</find>
-      <find>moviesFetching</find>
       <find>scrollListener</find>
       <find>sortBy</find>
       <find>addMovies</find>
@@ -190,6 +192,15 @@
       <find>new Intent</find>
       <find>displaype</find>
       <find>displayPeople</find>
+      <find>id_movie</find>
+      <find>CallbackMovies</find>
+      <find>md_castsLabel</find>
+      <find>md_similarlabel</find>
+      <find>getCasts(</find>
+      <find>getTrailers(</find>
+      <find>CallbackMoviesClick</find>
+      <find>callback_movies_click</find>
+      <find>callbackMoviesClick</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\Sasig\AndroidStudioProjects\MovieDB\app\src\main\java\com\sasig\moviedb</dir>
@@ -207,7 +218,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/movie_detail_options.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ResTrailer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/CallbackTrailers.java" />
@@ -238,26 +248,27 @@
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/round_double_arrow_24.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/people_options.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/PeopleFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/CallbackMovies.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_people.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/AdapterMovies.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/movie_main_options.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_people.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/People.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/PeopleActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_people.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/CallbackSplash.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/ProgressBarAnimation.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/SplashScreenActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/anim/rotate.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/thumb_similar.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java" />
       </list>
     </option>
   </component>
@@ -273,7 +284,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
@@ -281,11 +292,6 @@
             <path>
               <item name="MovieDB" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="MovieDB" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
             </path>
             <path>
               <item name="MovieDB" type="1abcf292:AndroidViewProjectNode" />
@@ -336,17 +342,11 @@
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
               <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
-            <path>
-              <item name="MovieDB" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -356,14 +356,12 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="e1ef1be7" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/layout" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Sasi Govind\StudioProjects\MovieDB\app\src\main\res\drawable" />
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Sasig\AndroidStudioProjects\MovieDB\app\src\main\res\layout" />
-      <recent name="C:\Users\Sasig\AndroidStudioProjects\MovieDB\app\src\main\res\drawable" />
     </key>
     <key name="android.template.packageName">
       <recent name="com.sasig.moviedb.view" />
@@ -372,8 +370,11 @@
     <key name="android.template.parentActivityClass">
       <recent name="" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sasi Govind\StudioProjects\MovieDB\app\src\main\res\layout" />
+      <recent name="C:\Users\Sasi Govind\StudioProjects\MovieDB\app\src\main\res\drawable" />
       <recent name="C:\Users\Sasig\AndroidStudioProjects\MovieDB\app\src\main\res\layout" />
+      <recent name="C:\Users\Sasig\AndroidStudioProjects\MovieDB\app\src\main\res\drawable" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -646,7 +647,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577045688409</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="App loading screen">
+      <created>1577064157411</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1577064157411</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -663,14 +671,14 @@
       <window_info id="Resources Explorer" order="7" weight="0.32995737" />
       <window_info id="Capture Tool" order="8" />
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.695581" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.8683369" weight="0.20585048" />
+      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.86727077" weight="0.20585048" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.4946695" weight="0.44637054" />
-      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.32356077" side_tool="true" visible="true" weight="0.34777898" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.6764392" visible="true" weight="0.34777898" />
+      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.36940297" side_tool="true" visible="true" weight="0.20585048" />
+      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.6759062" weight="0.34777898" />
       <window_info anchor="bottom" id="Android Profiler" order="6" />
       <window_info anchor="bottom" id="Debug" order="7" />
-      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.6321962" weight="0.2979415" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.630597" weight="0.2979415" />
       <window_info active="true" anchor="bottom" id="Messages" order="9" sideWeight="0.49946696" visible="true" weight="0.52654386" />
       <window_info anchor="bottom" id="Find" order="10" sideWeight="0.64818764" weight="0.32936078" />
       <window_info anchor="right" id="Preview" order="0" weight="0.30383795" />
@@ -770,17 +778,10 @@
     <MESSAGE value="touch poster to zoom added on movie detail" />
     <MESSAGE value="People fragment added on the movie detail activity" />
     <MESSAGE value="Fragment fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fragment fix" />
+    <MESSAGE value="App loading screen" />
+    <option name="LAST_COMMIT_MESSAGE" value="App loading screen" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/people_fragment.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ResCast.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="16" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ResPeople.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/CallbackPeople.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -887,32 +888,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/AdapterMovies.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="19" column="89" selection-start-line="19" selection-start-column="89" selection-end-line="19" selection-end-column="89" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/movie_main_options.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="212" column="17" selection-start-line="212" selection-start-column="17" selection-end-line="212" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -926,14 +906,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_people.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_people.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/People.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -956,14 +929,6 @@
           <folding>
             <element signature="e#1484#1524#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="51" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -1026,6 +991,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/Movie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/anim/rotate.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/CallbackSplash.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1033,17 +1015,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/Movie.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/ProgressBarAnimation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="468" column="31" selection-start-line="468" selection-start-column="31" selection-end-line="468" selection-end-column="31" />
+        <state relative-caret-position="561">
+          <caret line="40" column="10" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1055,28 +1033,13 @@
       </provider>
       <provider editor-type-id="android-manifest" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="72" column="17" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/ProgressBarAnimation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="637">
-          <caret line="40" column="10" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/SplashScreenActivity.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1085,18 +1048,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/model/ApiTMDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="87" column="46" lean-forward="true" selection-start-line="87" selection-start-column="46" selection-end-line="87" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/anim/rotate.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/MoviesRepo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="31" lean-forward="true" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
+        <state relative-caret-position="282">
+          <caret line="239" column="90" lean-forward="true" selection-start-line="239" selection-start-column="90" selection-end-line="239" selection-end-column="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/thumb_cast.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="37" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_movie_detail.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="73" column="53" lean-forward="true" selection-start-line="73" selection-start-column="53" selection-end-line="73" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/thumb_similar.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="53" lean-forward="true" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/controller/AdapterMovies.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="77" column="41" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="80" column="12" selection-start-line="80" selection-start-column="12" selection-end-line="88" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sasig/moviedb/view/MovieDetailActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="340" column="23" lean-forward="true" selection-start-line="340" selection-start-column="23" selection-end-line="340" selection-end-column="23" />
+          <folding>
+            <element signature="e#18442#18443#0" expanded="true" />
+            <element signature="e#18514#18515#0" expanded="true" />
+            <element signature="e#20205#20206#0" expanded="true" />
+            <element signature="e#20272#20273#0" expanded="true" />
+            <element signature="e#20330#20331#0" expanded="true" />
+            <element signature="e#20403#20404#0" expanded="true" />
+            <element signature="e#21822#21823#0" expanded="true" />
+            <element signature="e#21877#21878#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -237,4 +237,27 @@ public class MoviesRepo {
         this.LANG = lang;
     }
 
+    public void getSimilarMovies(int id_movie,  int page, final CallbackMovies callback) {
+        api.getSimilarMovies(id_movie, page, BuildConfig.APIKEY, LANG)
+                .enqueue(new Callback<ResMovies>() {
+                    @Override
+                    public void onResponse(Call<ResMovies> call, Response<ResMovies> resp) {
+                        if (resp.isSuccessful()) {
+                            ResMovies responseMovie = resp.body();
+                            if (responseMovie != null && responseMovie.getMovies() != null) {
+                                callback.onSuccess(responseMovie.getMovies(), responseMovie.getPage(), responseMovie.getTotalPages());
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResMovies> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+    }
 }
